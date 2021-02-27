@@ -19,17 +19,27 @@ def parsercli():
     # Tools
     parser.add_argument('--denoise', '-d', action='store_true')
 
+    parser.add_argument('--normalize', '-n', action='store_true')
+    parser.add_argument('--normalize-lower', type=checkintfloat, default=0.0)
+    parser.add_argument('--normalize-upper', type=checkintfloat, default=1.0)
+
     args = parser.parse_args()
 
     # Initialize Nifti
     niftiobject = Nifti(args.path, args.precision)
 
-    # Test arguments
-    print(args.path)
-    print(args.precision)
-
     if args.info:
         niftiobject.information()
+
+    if args.normalize:
+        niftiobject.normalize_nifti(args.normalize_lower, args.normalize_upper)
+
+
+def checkintfloat(x):
+    if not (type(x) == float or type(x) == int):
+        TypeError('Input for --normalize must be an int or float')
+
+    return float(x)
 
 
 def main():
