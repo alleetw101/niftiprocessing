@@ -1,11 +1,13 @@
 import numpy as np
+import SimpleITK as sitk
 
 
-def normalize(array: np.array, value_range=(0., 1.)) -> np.array:
+def normalize(array: np.array, lower: float, upper: float) -> np.array:
     newarray = array
 
     newarray += (0 - np.min(newarray))
-    newarray *= ((value_range[1] - value_range[0]) / np.amax(newarray))
+    newarray *= ((upper - lower) / np.amax(newarray))
+    newarray += lower
 
     return newarray
 
@@ -30,3 +32,7 @@ def pad(array: np.array, shape: (int, int, int)) -> np.array:
         if array_d > output_d:
             raise ValueError('Desired dimensions must be greater than input dimensions')
 
+
+def rotate_image(array: np.array) -> np.array:
+    # return np.transpose(array, [0, 2, 1])
+    return np.flip(array, axis=(0, 1))
