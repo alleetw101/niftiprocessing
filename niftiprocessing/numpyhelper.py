@@ -1,5 +1,4 @@
 import numpy as np
-import SimpleITK as sitk
 
 
 def normalize(array: np.array, lower: float, upper: float) -> np.array:
@@ -34,5 +33,4 @@ def pad(array: np.array, shape: (int, int, int)) -> np.array:
 
 
 def rotate_image(array: np.array) -> np.array:
-    # return np.transpose(array, [0, 2, 1])
     return np.flip(array, axis=(0, 1))

@@ -1,7 +1,5 @@
-import numpy as np
 import os
 import SimpleITK as sitk
-import sys
 
 from .numpyhelper import normalize, rotate_image
 from .graphical import plot_slice
@@ -19,7 +17,6 @@ class Nifti:
         self.file_name = os.path.basename(filepath)
         self.filepath = filepath
         self.reader = sitk.ImageFileReader()
-
 
     def information(self):
         print(f'--{self.file_name}--')
