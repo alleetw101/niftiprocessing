@@ -1,9 +1,11 @@
 import numpy as np
 import os
 import SimpleITK as sitk
+import sys
 
 from .numpyhelper import normalize, rotate_image
 from .graphical import plot_slice
+from .niftihelper import align
 
 
 class Nifti:
@@ -12,30 +14,32 @@ class Nifti:
         dtype = sitk.sitkFloat32 if precision == 32 else sitk.sitkFloat64
 
         sitk_image = sitk.ReadImage(filepath, dtype)
-        self.nifti_array = sitk.GetArrayFromImage(sitk_image)
 
-        self.shape = self.nifti_array.shape
+        self.nifti_array = sitk.GetArrayFromImage(sitk_image)
         self.file_name = os.path.basename(filepath)
         self.filepath = filepath
+        self.reader = sitk.ImageFileReader()
+
 
     def information(self):
         print(f'--{self.file_name}--')
-        print(f'Shape: {self.shape}')
+        print(f'Shape: {self.nifti_array.shape}')
 
-        reader = sitk.ImageFileReader()
+        self.reader.SetFileName(self.filepath)
+        self.reader.LoadPrivateTagsOn()
 
-        reader.SetFileName(self.filepath)
-        reader.LoadPrivateTagsOn()
+        self.reader.ReadImageInformation()
 
-        reader.ReadImageInformation()
-
-        for k in reader.GetMetaDataKeys():
-            v = reader.GetMetaData(k)
+        for k in self.reader.GetMetaDataKeys():
+            v = self.reader.GetMetaData(k)
             if not (v == '0' or v == ''):
                 print(f"({k}) == \"{v}\"")
 
     def plot(self, slice_index: int):
         plot_slice(self.nifti_array, slice_index)
+
+    def align_nifti(self):
+        self.nifti_array = align(self.nifti_array, self.reader)
 
     def normalize_nifti(self, lower: float, upper: float):
         self.nifti_array = normalize(self.nifti_array, lower, upper)
