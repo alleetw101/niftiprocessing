@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="niftiprocessing",
-    version="0.0.3",
+    version="0.0.5",
     author="Alan Lee",
     author_email="alleetw101@gmail.com",
     description="A nifti processing tool",
@@ -18,10 +18,11 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-       'SimpleITK>=2.0'
+        'SimpleITK>=2.0',
+        'numpy>=1.0'
     ],
     entry_points={
-        'console_scripts': ['niftiproc=niftiprocessing:main'],
+        'console_scripts': ['niftiprocessing=niftiprocessing:main'],
     },
     packages=setuptools.find_packages(),
     python_requires='>=3.6',
