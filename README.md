@@ -5,7 +5,7 @@ A nifti file processing tool
 Under development
 
 This software has NOT been approved for medical analysis/diagnosis. Please use other
-approved software in for medical use.
+approved software for medical use.
 
 # Options
     positional arguments:
